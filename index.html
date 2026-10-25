@@ -1,0 +1,470 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CodeWhy — Understand the code. Uncover the why.</title>
+<meta name="description" content="CodeWhy by SYNAPZ helps developers understand not just what code does, but the possible intent behind its design. Powered by Sarvam-105B.">
+<style>
+:root{--plum:#352044;--violet:#7952C7;--violet-d:#5e3fa3;--violet-l:#9b7de0;--lavender:#EAE2FF;--lavender-d:#d4c9ff;--blush:#FFE4EF;--rose:#F6B7CF;--offwhite:#FFFAFD;--text:#2E2435;--muted:#766B7D;--card-bg:#ffffff;--border:#e8e0f0;--shadow:0 4px 24px rgba(53,32,68,.09);--shadow-sm:0 2px 10px rgba(53,32,68,.06);--radius:16px;--radius-sm:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,'Segoe UI',system-ui,Arial,sans-serif;background:var(--offwhite);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--violet);text-decoration:none}
+a:hover{text-decoration:underline}
+button{cursor:pointer;font-family:inherit}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+.container{max-width:1140px;margin:auto;padding:0 24px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+#top-nav{position:sticky;top:0;z-index:100;background:rgba(255,250,253,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;padding:14px 0;justify-content:space-between;gap:8px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--plum)}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{padding:6px 14px;border-radius:99px;font-size:14px;font-weight:500;color:var(--muted);transition:background .15s,color .15s}
+.nav-links a:hover,.nav-links a:focus-visible{background:var(--lavender);color:var(--violet);text-decoration:none}
+.nav-cta{background:var(--violet)!important;color:#fff!important;font-weight:700!important;padding:8px 18px!important}
+.nav-cta:hover{background:var(--violet-d)!important}
+.nav-toggle{display:none;border:none;background:none;padding:6px;border-radius:8px;color:var(--plum)}
+@media(max-width:720px){.nav-links{display:none;flex-direction:column;align-items:stretch;position:absolute;top:100%;left:0;right:0;background:var(--offwhite);border-bottom:1px solid var(--border);padding:12px 24px 20px;gap:2px}.nav-links.open{display:flex}.nav-links a{padding:10px 14px;border-radius:var(--radius-sm)}.nav-toggle{display:flex;align-items:center;justify-content:center}}
+#hero{padding:80px 0 60px;background:linear-gradient(135deg,var(--plum) 0%,#5a3490 55%,var(--violet) 100%);text-align:center;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(246,183,207,.18),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(121,82,199,.3),transparent 60%)}
+.hero-content{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.9);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 16px;border-radius:99px;margin-bottom:24px}
+#hero h1{font-size:clamp(32px,6vw,58px);font-weight:800;line-height:1.12;color:#fff;letter-spacing:-.5px;margin-bottom:16px}
+#hero h1 span{background:linear-gradient(90deg,var(--rose),var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.78);max-width:540px;margin:0 auto 36px;line-height:1.65}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:var(--radius-sm);padding:13px 26px;font-size:15px;font-weight:700;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+.btn-violet{background:var(--violet);color:#fff;box-shadow:0 4px 18px rgba(121,82,199,.45)}
+.btn-violet:hover{background:var(--violet-d);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.hero-note{margin-top:20px;font-size:12px;color:rgba(255,255,255,.5)}
+section{padding:72px 0}
+.section-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--violet);margin-bottom:10px}
+.section-title{font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-.3px;color:var(--plum);line-height:1.2;margin-bottom:14px}
+.section-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.65}
+.section-header{margin-bottom:48px}
+#how{background:var(--lavender)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{background:var(--card-bg);border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow-sm)}
+.step-num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--violet-l));color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.step h3{font-size:16px;font-weight:700;color:var(--plum);margin-bottom:8px}
+.step p{font-size:14px;color:var(--muted);line-height:1.6}
+@media(max-width:720px){.steps{grid-template-columns:1fr}}
+#features{background:var(--offwhite)}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.feat{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm)}
+.feat-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--lavender),var(--blush));display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:22px}
+.feat h3{font-size:15px;font-weight:700;color:var(--plum);margin-bottom:6px}
+.feat p{font-size:13px;color:var(--muted);line-height:1.6}
+@media(max-width:640px){.features-grid{grid-template-columns:1fr}}
+#try{background:linear-gradient(180deg,var(--offwhite) 0%,var(--lavender) 100%)}
+.explorer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+.card-title{font-size:17px;font-weight:700;color:var(--plum);margin-bottom:6px}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55}
+.field-label{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+select,textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--offwhite);color:var(--text);font-family:inherit;transition:border-color .15s,box-shadow .15s}
+select:focus,textarea:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(121,82,199,.15)}
+select{padding:10px 14px;font-size:14px}
+textarea{padding:14px;font-size:13px;line-height:1.65;font-family:ui-monospace,Consolas,'Cascadia Code','Fira Code',monospace;height:340px;resize:vertical}
+.char-counter{font-size:11px;color:var(--muted)}
+.char-counter.warn{color:#c0392b}
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.btn-primary{background:var(--violet);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 22px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:background .15s,transform .15s,box-shadow .15s}
+.btn-primary:hover:not(:disabled){background:var(--violet-d);transform:translateY(-1px);box-shadow:0 4px 14px rgba(121,82,199,.35)}
+.btn-secondary{background:var(--lavender);color:var(--violet);border:none;border-radius:var(--radius-sm);padding:11px 18px;font-size:14px;font-weight:600;transition:background .15s}
+.btn-secondary:hover:not(:disabled){background:var(--lavender-d)}
+.btn-icon{background:var(--lavender);color:var(--violet);border:none;border-radius:var(--radius-sm);padding:8px 10px;font-size:13px;display:inline-flex;align-items:center;gap:5px;font-weight:600;transition:background .15s}
+.btn-icon:hover{background:var(--lavender-d)}
+.api-note{font-size:11px;color:var(--muted);margin-top:10px}
+.preset-wrap{position:relative;display:inline-block}
+.preset-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:50;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow);min-width:220px;padding:6px}
+.preset-menu.open{display:block}
+.preset-item{width:100%;text-align:left;background:none;border:none;padding:9px 12px;border-radius:8px;font-size:13px;color:var(--text);cursor:pointer;transition:background .1s;white-space:nowrap}
+.preset-item:hover,.preset-item:focus-visible{background:var(--lavender);color:var(--violet)}
+#out{min-height:200px}
+.placeholder-state{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px}
+.loading-state{display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 20px;text-align:center}
+.spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--lavender-d);border-top-color:var(--violet);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state p{font-size:14px;color:var(--muted)}
+.error-banner{background:#fff2f6;border:1.5px solid #f5a0c0;border-radius:var(--radius-sm);padding:14px 16px;font-size:13px;color:#7b1a3a;line-height:1.55}
+.error-banner strong{display:block;margin-bottom:4px}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:4px;background:var(--lavender);color:var(--violet);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.pill-rose{background:var(--blush);color:#9e4060}
+.result-actions{display:flex;gap:6px}
+.copy-btn,.dl-btn{background:var(--lavender);color:var(--violet);border:none;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:background .15s}
+.copy-btn:hover,.dl-btn:hover{background:var(--lavender-d)}
+.section-block{margin-bottom:20px}
+.section-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.tag-behavior{color:#1a6e3c;background:#e8f5ee;padding:3px 10px;border-radius:99px}
+.tag-intent{color:#7b4500;background:#fff3e0;padding:3px 10px;border-radius:99px}
+.tag-evidence{color:#1a3d8a;background:#eef3ff;padding:3px 10px;border-radius:99px}
+.tag-uncertain{color:#6b4c00;background:#fffbe6;padding:3px 10px;border-radius:99px}
+.tag-verify{color:#5a1a6e;background:#f5e8ff;padding:3px 10px;border-radius:99px}
+.tag-summary{color:#2e2435;background:var(--lavender);padding:3px 10px;border-radius:99px}
+.section-body{font-size:14px;line-height:1.75;color:var(--text);background:var(--offwhite);border-radius:var(--radius-sm);border:1px solid var(--border);padding:14px 16px;white-space:pre-wrap;word-break:break-word}
+.inference-note{background:var(--blush);border-left:3px solid var(--rose);font-size:12px;color:#7b3a50;padding:8px 12px;border-radius:0 8px 8px 0;margin-top:6px;line-height:1.5}
+.evidence-boundary{background:var(--lavender);border:1px solid var(--lavender-d);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--violet-d);line-height:1.55;margin-top:16px}
+.evidence-boundary strong{display:block;margin-bottom:2px}
+.explanation-raw{white-space:pre-wrap;font-size:14px;line-height:1.75;background:var(--offwhite);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;max-height:520px;overflow-y:auto;word-break:break-word}
+#example{background:var(--offwhite);padding:72px 0}
+.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.example-code{background:var(--plum);color:#f0e9ff;border-radius:var(--radius);padding:24px;font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:1.65;overflow-x:auto}
+.example-code .kw{color:#c084fc}.example-code .fn{color:#a5f3fc}.example-code .cmt{color:#7a7090}
+.example-explanation{display:flex;flex-direction:column;gap:12px}
+.ex-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-bottom:4px}
+.ex-behavior{color:#1a6e3c;background:#e8f5ee}.ex-intent{color:#7b4500;background:#fff3e0}.ex-verify{color:#5a1a6e;background:#f5e8ff}
+.ex-block{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.65}
+@media(max-width:800px){.example-grid{grid-template-columns:1fr}}
+#faq{background:var(--lavender)}
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;font-weight:600;color:var(--plum);cursor:pointer;transition:background .15s}
+.faq-q:hover,.faq-q[aria-expanded="true"]{background:var(--lavender)}
+.faq-chevron{flex-shrink:0;color:var(--violet);transition:transform .25s}
+.faq-q[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 20px 18px;font-size:14px;color:var(--muted);line-height:1.7}
+.faq-a.open{display:block}
+footer{background:var(--plum);color:rgba(255,255,255,.7);padding:48px 0 32px}
+.footer-inner{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand{font-size:20px;font-weight:800;color:#fff;margin-bottom:10px}
+.footer-desc{font-size:13px;line-height:1.65}
+.footer-col h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col ul{list-style:none}
+.footer-col ul li+li{margin-top:8px}
+.footer-col a{font-size:13px;color:rgba(255,255,255,.6);transition:color .15s}
+.footer-col a:hover{color:#fff;text-decoration:none}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px}
+@media(max-width:640px){.footer-inner{grid-template-columns:1fr}.footer-bottom{flex-direction:column;align-items:flex-start}}
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--plum);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:auto}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.toast-success{border-left:3px solid #4ade80}
+.toast.toast-error{border-left:3px solid #f87171}
+@media(max-width:900px){.explorer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav id="top-nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-brand" aria-label="CodeWhy home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#7952C7"/><path d="M8 10L12 14L8 18" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 10h4M16 14h3M16 18h4" stroke="#F6B7CF" stroke-width="2" stroke-linecap="round"/></svg>
+      CodeWhy
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-controls="nav-links" aria-expanded="false" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3 6h16M3 11h16M3 16h16" stroke="#352044" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#try" class="nav-cta">Try CodeWhy</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="container hero-content">
+    <div class="hero-badge">SYNAPZ &middot; Sarvam Track &middot; HackFront India</div>
+    <h1 id="hero-heading">Understand the code.<br><span>Uncover the why.</span></h1>
+    <p class="hero-sub">CodeWhy separates what code <em>observably does</em> from the <em>possible intent</em> behind its design &mdash; powered by Sarvam-105B, with evidence and honesty about what cannot be known.</p>
+    <div class="hero-actions">
+      <a href="#try" class="btn btn-violet">Explain my code</a>
+      <a href="#how" class="btn btn-ghost">See how it works</a>
+    </div>
+    <p class="hero-note">No code executed on server &middot; API key stays server-side &middot; No storage</p>
+  </div>
+</section>
+
+<section id="how" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Workflow</p>
+      <h2 class="section-title" id="how-heading">Three steps to clarity</h2>
+      <p class="section-sub">No setup beyond a Sarvam API key. Paste code, choose a language, get a structured, honest explanation.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Paste your snippet</h3>
+        <p>Paste a focused function or code block you need to understand. CodeWhy works best with a single function or a short class, not entire files.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Choose your language</h3>
+        <p>Select an explanation language: English or any of ten Indian languages supported by Sarvam-105B.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Read the structured explanation</h3>
+        <p>Sarvam-105B returns six labelled sections: behavior, possible intent (as inference), evidence, uncertainty, verification steps, and a summary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" aria-labelledby="features-heading">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title" id="features-heading">What CodeWhy actually does</h2>
+      <p class="section-sub">Only implemented features listed here.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat"><div class="feat-icon">&#128269;</div><h3>Behavior analysis</h3><p>Describes what the code demonstrably does: control flow, inputs, outputs, and observable side effects. No claims about execution.</p></div>
+      <div class="feat"><div class="feat-icon">&#128161;</div><h3>Intent inference (clearly labelled)</h3><p>Suggests plausible reasons for design choices. Every inference is explicitly marked so you know what is observation and what is interpretation.</p></div>
+      <div class="feat"><div class="feat-icon">&#128206;</div><h3>Code evidence</h3><p>Cites the specific lines, variable names, and expressions from your actual code that support each claim. No invented references.</p></div>
+      <div class="feat"><div class="feat-icon">&#9888;&#65039;</div><h3>Uncertainty disclosure</h3><p>Identifies what cannot be concluded from the code alone: missing context, ambiguous logic, and limits of static analysis.</p></div>
+      <div class="feat"><div class="feat-icon">&#9989;</div><h3>Verification steps</h3><p>Suggests concrete tests, input/output examples, and inspection steps you can run to confirm key claims before making changes.</p></div>
+      <div class="feat"><div class="feat-icon">&#127760;</div><h3>Indian language support</h3><p>Explanations in English, Hindi, Kannada, Tamil, Telugu, Bengali, Marathi, Gujarati, Malayalam, Punjabi, and Odia via Sarvam-105B.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="try" aria-labelledby="try-heading">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Interactive explorer</p>
+      <h2 class="section-title" id="try-heading">Try CodeWhy</h2>
+      <p class="section-sub">Paste any code snippet and get a structured explanation from Sarvam-105B.</p>
+    </div>
+    <div class="explorer-grid">
+      <div class="card">
+        <h3 class="card-title">Your code</h3>
+        <p class="card-sub">Paste a focused function or snippet. Ctrl+Enter or Cmd+Enter to submit.</p>
+        <div class="field-label"><span>Explanation language</span></div>
+        <select id="lang" aria-label="Explanation language">
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Kannada">Kannada</option>
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Gujarati">Gujarati</option>
+          <option value="Malayalam">Malayalam</option>
+          <option value="Punjabi">Punjabi</option>
+          <option value="Odia">Odia</option>
+        </select>
+        <div class="field-label" style="margin-top:16px">
+          <span>Code snippet</span>
+          <span class="char-counter" id="char-count">0 / 30,000</span>
+        </div>
+        <textarea id="code" placeholder="Paste a focused function or code snippet here&#8230;" spellcheck="false" autocomplete="off" aria-label="Code snippet" aria-describedby="code-hint"></textarea>
+        <p id="code-hint" class="visually-hidden">Maximum 30,000 characters. Use Ctrl+Enter to submit.</p>
+        <div class="btn-row">
+          <button class="btn-primary" id="btn-explain" onclick="explainCode()">Explain with Sarvam</button>
+          <div class="preset-wrap">
+            <button class="btn-secondary" id="btn-preset" onclick="togglePresets()" aria-haspopup="true" aria-expanded="false" aria-controls="preset-menu">Load example &#9660;</button>
+            <div class="preset-menu" id="preset-menu" role="menu">
+              <button class="preset-item" role="menuitem" onclick="loadPreset('filter')">JS: filter active users</button>
+              <button class="preset-item" role="menuitem" onclick="loadPreset('binary')">Python: binary search</button>
+              <button class="preset-item" role="menuitem" onclick="loadPreset('debounce')">JS: debounce</button>
+              <button class="preset-item" role="menuitem" onclick="loadPreset('retry')">Python: retry decorator</button>
+            </div>
+          </div>
+          <button class="btn-icon" onclick="clearAll()" aria-label="Clear code and reset">Clear</button>
+        </div>
+        <p class="api-note">Your API key stays on the server. The browser never receives it.</p>
+      </div>
+      <div class="card" aria-live="polite" aria-atomic="false">
+        <h3 class="card-title">Explanation</h3>
+        <div id="out">
+          <div class="placeholder-state"><p>Paste code and click <strong>Explain with Sarvam</strong> to get a structured explanation.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="example" aria-labelledby="example-heading">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Demonstration</p>
+      <h2 class="section-title" id="example-heading">What an explanation looks like</h2>
+      <p class="section-sub">A static illustration. Run the explorer above for a live Sarvam-105B result.</p>
+    </div>
+    <div class="example-grid">
+      <div>
+        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--violet);margin-bottom:10px">Sample code</p>
+        <pre class="example-code"><code><span class="kw">def</span> <span class="fn">binary_search</span>(arr, target):
+    lo, hi = 0, len(arr) - 1
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = (lo + hi) // 2
+        <span class="kw">if</span> arr[mid] == target:
+            <span class="kw">return</span> mid
+        <span class="kw">elif</span> arr[mid] &lt; target:
+            lo = mid + 1
+        <span class="kw">else</span>:
+            hi = mid - 1
+    <span class="kw">return</span> -1  <span class="cmt"># not found</span></code></pre>
+      </div>
+      <div class="example-explanation">
+        <div class="ex-block"><span class="ex-tag ex-behavior">Behavior</span><p>Searches a sorted array for <code>target</code> using divide-and-conquer. Returns the index of the matching element, or -1 if not present. Runs in O(log n) time.</p></div>
+        <div class="ex-block"><span class="ex-tag ex-intent">Possible intent (inference)</span><p>The <code>// 2</code> integer division avoids float arithmetic. Using -1 as a sentinel rather than raising an exception suggests the caller checks the return value without a try/except wrapper.</p></div>
+        <div class="ex-block"><span class="ex-tag ex-verify">Verification suggestion</span><p>Test with an empty array, a single-element array, and a target equal to the first and last elements to confirm edge-case behavior before relying on the -1 sentinel.</p></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:4px">Static example for illustration only. Not a live API result.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="section-header" style="text-align:center">
+      <p class="section-label">FAQ</p>
+      <h2 class="section-title" id="faq-heading">Common questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a1" id="faq-q1" onclick="toggleFaq(this)">Does CodeWhy actually know what the developer intended?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1">No. CodeWhy labels any reasoning about developer motivation as <em>inference</em>. It can observe what the code does; it cannot verify intent without tests, commit history, or documentation.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a2" id="faq-q2" onclick="toggleFaq(this)">Is my code sent to a third party?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2">Your snippet is sent to the Sarvam AI API. CodeWhy itself stores nothing &mdash; there is no database in this prototype. See Sarvam's privacy policy for their data handling practices.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a3" id="faq-q3" onclick="toggleFaq(this)">Does it execute my code?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3">No. CodeWhy analyses code as text only. No code is executed on the server.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a4" id="faq-q4" onclick="toggleFaq(this)">Which programming languages are supported?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4">Any language Sarvam-105B understands: Python, JavaScript, TypeScript, Java, C, C++, Go, Rust, and more. Quality may vary; Python and JavaScript tend to produce the most detailed explanations in testing.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a5" id="faq-q5" onclick="toggleFaq(this)">Why do I need my own Sarvam API key?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5">This is a local prototype with no hosted deployment. Add your key to <code>prototype/.env</code> as <code>SARVAM_API_KEY=your_key</code>. The key is read server-side only and never sent to the browser.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a6" id="faq-q6" onclick="toggleFaq(this)">Can I trust the explanation as a verified fact?<svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6">No. Each explanation distinguishes observable behavior from inference and includes an uncertainty section. Use the verification steps to confirm claims before changing code.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">CodeWhy</div>
+        <p class="footer-desc">Understand not just what code does, but the possible intent behind its design. Powered by Sarvam-105B. Built honestly by SYNAPZ.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul><li><a href="#how">How It Works</a></li><li><a href="#features">Features</a></li><li><a href="#try">Try CodeWhy</a></li><li><a href="#faq">FAQ</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul><li><a href="https://docs.sarvam.ai/" target="_blank" rel="noopener">Sarvam API Docs</a></li><li><a href="https://dashboard.sarvam.ai/" target="_blank" rel="noopener">Get API Key</a></li><li><a href="https://github.com/PragathiM16" target="_blank" rel="noopener">GitHub</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Built by <strong style="color:#fff">SYNAPZ</strong> for HackFront India &middot; Sarvam Track</span>
+      <span>CodeWhy &middot; AI and Developer Tools</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" aria-live="assertive" aria-atomic="true" role="status"></div>
+
+<script>
+const PRESETS = {
+  filter:{label:'JS: filter active users',code:`function getVisibleUsers(users, query) {\n  const normalized = query.trim().toLowerCase();\n  return users\n    .filter(user => user.active)\n    .filter(user => user.name.toLowerCase().includes(normalized))\n    .sort((a, b) => a.name.localeCompare(b.name));\n}`},
+  binary:{label:'Python: binary search',code:`def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1`},
+  debounce:{label:'JS: debounce',code:`function debounce(fn, delay) {\n  let timer;\n  return function (...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), delay);\n  };\n}`},
+  retry:{label:'Python: retry decorator',code:`import time, functools\n\ndef retry(max_attempts=3, delay=1.0, exceptions=(Exception,)):\n    def decorator(fn):\n        @functools.wraps(fn)\n        def wrapper(*args, **kwargs):\n            for attempt in range(1, max_attempts + 1):\n                try:\n                    return fn(*args, **kwargs)\n                except exceptions as e:\n                    if attempt == max_attempts:\n                        raise\n                    time.sleep(delay)\n        return wrapper\n    return decorator`}
+};
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+function showToast(msg,type='success'){
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className=`toast toast-${type}`;t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>t.classList.add('show'))});
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3000);
+}
+
+const navToggle=document.getElementById('nav-toggle');
+const navLinks=document.getElementById('nav-links');
+navToggle.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',String(open))});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLinks.classList.remove('open');navToggle.setAttribute('aria-expanded','false')}));
+
+function toggleFaq(btn){
+  const expanded=btn.getAttribute('aria-expanded')==='true';
+  document.querySelectorAll('.faq-q').forEach(b=>{b.setAttribute('aria-expanded','false');const id=b.getAttribute('aria-controls');if(id)document.getElementById(id)?.classList.remove('open')});
+  if(!expanded){btn.setAttribute('aria-expanded','true');const id=btn.getAttribute('aria-controls');if(id)document.getElementById(id)?.classList.add('open')}
+}
+
+const codeArea=document.getElementById('code');
+const charCount=document.getElementById('char-count');
+codeArea.addEventListener('input',()=>{const len=codeArea.value.length;charCount.textContent=`${len.toLocaleString()} / 30,000`;charCount.classList.toggle('warn',len>28000)});
+
+function togglePresets(){const menu=document.getElementById('preset-menu');const btn=document.getElementById('btn-preset');const open=menu.classList.toggle('open');btn.setAttribute('aria-expanded',String(open))}
+function loadPreset(key){const p=PRESETS[key];if(!p)return;codeArea.value=p.code;codeArea.dispatchEvent(new Event('input'));document.getElementById('out').innerHTML=`<div class="placeholder-state"><p>Click <strong>Explain with Sarvam</strong> to analyse the example.</p></div>`;togglePresets();showToast('Example loaded')}
+document.addEventListener('click',e=>{const wrap=document.querySelector('.preset-wrap');if(wrap&&!wrap.contains(e.target)){document.getElementById('preset-menu').classList.remove('open');document.getElementById('btn-preset').setAttribute('aria-expanded','false')}});
+
+function clearAll(){
+  codeArea.value='';codeArea.dispatchEvent(new Event('input'));
+  document.getElementById('out').innerHTML='<div class="placeholder-state"><p>Paste code and click <strong>Explain with Sarvam</strong> to get a structured explanation.</p></div>';
+  document.getElementById('lang').selectedIndex=0;showToast('Cleared');
+}
+
+function copyExplanation(text){navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard')).catch(()=>showToast('Copy failed','error'))}
+function downloadExplanation(text,lang){const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`codewhy-${lang.toLowerCase()}.txt`;a.click();URL.revokeObjectURL(a.href)}
+
+function renderStructured(data,language){
+  const SECS=[
+    {key:'behavior',label:'Observable behavior',tagClass:'tag-behavior',note:null},
+    {key:'intent',label:'Possible intent',tagClass:'tag-intent',note:'Every claim here is an AI inference — not a verified fact about the original developer\'s motivation.'},
+    {key:'evidence',label:'Evidence from the code',tagClass:'tag-evidence',note:null},
+    {key:'uncertainty',label:'Uncertainty & limits',tagClass:'tag-uncertain',note:null},
+    {key:'verification',label:'Verification steps',tagClass:'tag-verify',note:null},
+    {key:'summary',label:'Summary',tagClass:'tag-summary',note:null},
+  ];
+  let plain=`CodeWhy Explanation (${language})\n${'='.repeat(44)}\n\n`;
+  let html=`<div class="result-header"><div class="pills"><span class="pill">Sarvam-105B</span><span class="pill pill-rose">${escapeHtml(language)}</span></div><div class="result-actions"><button class="copy-btn" id="cp-btn" aria-label="Copy explanation">Copy</button><button class="dl-btn" id="dl-btn" aria-label="Download explanation">Download</button></div></div>`;
+  for(const s of SECS){const v=data[s.key];if(!v||!v.trim())continue;plain+=`${s.label.toUpperCase()}\n${'-'.repeat(s.label.length)}\n${v.trim()}\n\n`;html+=`<div class="section-block"><span class="section-tag ${s.tagClass}">${escapeHtml(s.label)}</span><div class="section-body">${escapeHtml(v.trim())}</div>${s.note?`<div class="inference-note">${escapeHtml(s.note)}</div>`:''}</div>`}
+  plain+=`\nGenerated by CodeWhy (SYNAPZ) | Sarvam-105B\nVerify inferences before changing code.\n`;
+  html+=`<div class="evidence-boundary"><strong>Evidence boundary</strong>Observable behavior is described from code structure; intent sections are inferences. Verify before changing code.</div>`;
+  setTimeout(()=>{document.getElementById('cp-btn')?.addEventListener('click',()=>copyExplanation(plain));document.getElementById('dl-btn')?.addEventListener('click',()=>downloadExplanation(plain,language))},0);
+  return html;
+}
+
+function renderFallback(text,language){
+  const plain=`CodeWhy Explanation (${language})\n${'='.repeat(44)}\n\n${text}\n\nGenerated by CodeWhy (SYNAPZ) | Sarvam-105B\n`;
+  return `<div class="result-header"><div class="pills"><span class="pill">Sarvam-105B</span><span class="pill pill-rose">${escapeHtml(language)}</span></div><div class="result-actions"><button class="copy-btn" onclick="copyExplanation(${JSON.stringify(plain)})">Copy</button></div></div><div class="explanation-raw">${escapeHtml(text)}</div><div class="evidence-boundary" style="margin-top:12px"><strong>Evidence boundary</strong>Verify inferences before changing code.</div>`;
+}
+
+async function explainCode(){
+  const code=codeArea.value.trim();const language=document.getElementById('lang').value;const out=document.getElementById('out');const btn=document.getElementById('btn-explain');
+  if(!code){out.innerHTML='<div class="error-banner"><strong>No code provided</strong>Paste a code snippet first.</div>';return}
+  if(code.length>30000){out.innerHTML='<div class="error-banner"><strong>Snippet too long</strong>Maximum 30,000 characters.</div>';return}
+  btn.disabled=true;
+  out.innerHTML='<div class="loading-state" role="status"><div class="spinner" aria-hidden="true"></div><p>Asking Sarvam-105B to reason about the code&#8230;</p></div>';
+  try{
+    const resp=await fetch('/api/explain',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,language})});
+    const data=await resp.json();
+    if(!resp.ok)throw new Error(data.error||`Server returned ${resp.status}.`);
+    out.innerHTML=data.structured?renderStructured(data.explanation,language):renderFallback(data.explanation?.behavior||'',language);
+  }catch(err){
+    let msg=err.message||'An unexpected error occurred.';
+    if(msg.includes('Failed to fetch')||msg.includes('NetworkError'))msg='Could not reach the local server. Make sure the server is running (npm start).';
+    out.innerHTML=`<div class="error-banner"><strong>Error</strong>${escapeHtml(msg)}</div>`;
+    showToast(msg.slice(0,60),'error');
+  }finally{btn.disabled=false}
+}
+
+codeArea.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')explainCode()});
+</script>
+</body>
+</html>
